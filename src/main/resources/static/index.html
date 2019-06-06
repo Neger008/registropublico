@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Ejemplo del uso de formularios - aprenderaprogramar.com</title>
+</head>
+
+<body>
+<p>mostrar Documentos <a href="/document/greeting">here</a></p>
+<form id="form1"  method="get" >
+
+    <p>
+        <label for="nombre">Nombre: </label>
+        <input type="text" name="nombre" id="nombre">
+
+        <br/> <br/>
+
+        <label for="apellido">Apellido: </label>
+        <input type="text" name="apellido" id="apellido">
+        <br/> <br/>
+
+        <labe>Tipo Documento</labe>
+            <label for="type">type : </label><select name="type" id ="type">
+            <option value="dni">dni</option>
+            <option value="pasaporte" selected>pasaporte</option>
+        </select>
+        <br/><br/>
+
+        <label for="nro_identificacion">N° documeto: </label>
+        <input type="text" name="nro_identificacion" id="nro_identificacion" maxlength="8">
+
+        <br><br>
+
+        <label for="sexo">sexo : </label><select name="sexo" id ="sexo">
+            <option value="varon">varon</option>
+            <option value="mujer" selected>mujer</option>
+        </select>
+        <br><br>
+        <label for="reference_person">Persona de contacto: </label>
+
+        <input type="text" name="reference_person" id="reference_person" maxlength="8">
+        <br><br>
+        <button id="submit">Enviar</button>
+
+
+        <label for="edad">edad : </label>
+
+        <input type="text" name="edad" id="edad" maxlength="8">
+
+        <br/> <br/>
+
+        <label for="fecha_nacimiento">edad : </label>
+
+        <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" maxlength="8">
+
+        <br/> <br/>
+
+
+    </p>
+
+</form>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    var getFormData = function (formId) {
+        var fieldSet = {};
+        var x = $("#" + formId).serializeArray();
+        $.each(x, function (i, field) {
+            fieldSet[field.name] = field.value;
+        });
+        return fieldSet;
+    };
+    $('#submit').click(function(){
+        var formData = getFormData("form1"); // retun form values.
+        alert(JSON.stringify(formData));
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/document/save",
+            data: JSON.stringify(formData),
+            dataType: 'json',
+            timeout: 600000,
+            success: function (formData) {
+                alert('success');
+                // $("#btn-update").prop("disabled", false);
+                //...
+            },
+            error: function (e) {
+                alert('error');
+                // $("#btn-save").prop("disabled", false);
+                //...
+            }
+        });
+    });
+</script>
+
+</body>
